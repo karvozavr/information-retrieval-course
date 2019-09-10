@@ -25,8 +25,8 @@ class Document:
         for exclude in excludes:
             for tag in exclude:
                 tag.extract()
-        raw_text = soup.get_text(separator=' ')
-        self.text = re.sub(r'\s+', ' ', raw_text)
+        raw_text = soup.get_text(separator='\n')
+        self.text = re.sub(r'\s+', '\n', raw_text)
 
     def save_html(self, path):
         with open(path, 'w', encoding='cp1251') as file:
