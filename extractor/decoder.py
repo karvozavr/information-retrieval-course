@@ -19,7 +19,7 @@ class Document:
         self.url = url
         self.id = id
         self.bytes_size = bytes_size
-        soup = BeautifulSoup(content, 'html.parser')
+        soup = BeautifulSoup(content, 'lxml')
         self.references = list(filter(lambda x: x is not None, map(lambda link: link.get('href'), soup.find_all('a'))))
         excludes = [soup.find_all('script'), soup.find_all('style'), soup.find_all('meta')]
         for exclude in excludes:
