@@ -37,9 +37,9 @@ class Document:
             file.write(self.text)
 
     def save(self, out_dir):
-        html_path = os.path.join(out_dir, self.id + '.html')
-        text_path = os.path.join(out_dir, self.id + '.txt')
-        json_path = os.path.join(out_dir, self.id + '.json')
+        html_path = os.path.join(out_dir, 'html', self.id + '.html')
+        text_path = os.path.join(out_dir, 'text', self.id + '.txt')
+        json_path = os.path.join(out_dir, 'info', self.id + '.json')
 
         self.save_html(html_path)
         self.save_text(text_path)
