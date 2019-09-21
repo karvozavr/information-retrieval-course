@@ -5,7 +5,7 @@ import os
 import re
 import xml.etree.ElementTree as ET
 from pymystem3 import Mystem
-
+import gc
 import click
 from bs4 import BeautifulSoup
 from tqdm import tqdm
@@ -134,10 +134,11 @@ def main(dataset, output):
 
     json_path = os.path.join(output, 'all_info.json')
 
+    i = 0
     for file in os.listdir(dataset):
+        gc.collect()
         print(file)
         documents = process_file(os.path.join(dataset, file))
-        i = 0
         f = open(json_path, 'w')
         for doc in tqdm(documents):
             if i % 1000 == 0:
