@@ -16,6 +16,8 @@ stop_words = {'г', '©'}
 
 mystem = Mystem()
 
+normal_word = re.compile('^[A-Za-z0-9Ѐ-ӿ]*$')
+
 
 def get_stop_words(files):
     for file in files:
@@ -36,11 +38,15 @@ def getText(d):
 
 
 def getLexOrText(d):
-    if not d['analysis']:
+    if 'analysis' not in d or not d['analysis']:
         return getText(d)
 
     analysis = d['analysis'][0]
     return analysis['lex'] if 'lex' in analysis else getText(d)
+
+
+def is_normal_word(d):
+    return normal_word.match(d['text']) is not None
 
 
 def filter_text(text):
@@ -51,7 +57,7 @@ def filter_text(text):
     words_results = mystem.analyze(text)
 
     words_results = filter(bool, words_results)
-    words_results = list(filter(lambda x: 'analysis' in x, words_results))
+    words_results = list(filter(lambda x: 'analysis' in x or is_normal_word(x), words_results))
 
     json_results = list(filter(is_not_stop_word, words_results))
 
@@ -102,7 +108,7 @@ class Document:
         }
 
         s = json.dumps(info, ensure_ascii=False)
-        out.write(s + ', ')
+        out.write(s)
 
 
 def process_file(filename):
@@ -146,8 +152,12 @@ def main(dataset, output):
                 f.close()
                 f = open(os.path.join(output, f'all_info{i // 1000}.json'), 'w')
                 f.write('[')
+            else:
+                f.write(',\n')
             save_processed_document(doc, f)
             i += 1
+        f.write(']')
+        f.close()
 
 
 if __name__ == '__main__':
