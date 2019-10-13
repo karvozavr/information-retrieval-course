@@ -9,10 +9,10 @@ def process_files(file1, file2):
 		lines2 = f2.readlines()
 
 		for line1, line2 in zip(lines1, lines2):
-			l1 = line1.split(' ')
-			l2 = line2.split(' ')
+			l1 = line1.split()
+			l2 = line2.split()
 			l1[0] = l2[2]
-			print(' '.join(l1), end='')
+			print(' '.join(l1))
 
 
 @click.command()
